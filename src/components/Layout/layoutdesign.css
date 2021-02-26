@@ -1,0 +1,21 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@500&display=swap'); */
+
+.sidebar{
+    background-color: #222d32;
+    color: #e3e3e3;
+    padding-top: 65px;
+    height: 1600px;
+    width: 250px;
+    position: absolute;
+    margin-left: 0%;
+    font-family: 'Alegreya', serif;
+}
+
+ #active{
+    background-color:#3f51b5;
+}
+
+.font{
+    font-family: 'Alegreya', serif;
+}
+
