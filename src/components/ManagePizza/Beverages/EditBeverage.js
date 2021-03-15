@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core';
 import ReactNotification from 'react-notifications-component'
 import {store} from "react-notifications-component";
 import { Formik} from "formik";
+import { Redirect } from "react-router-dom";
 import * as yup from "yup";
 import '../Styles/style.css'
 
@@ -74,12 +75,13 @@ class EditBeverage extends Component {
           imgUrl: "",
           desc:"",
           price: "",
-        
+          redirect: null        
       };
       }
 
       componentDidMount() {
         this.get();
+        window.scrollTo(0, 0);
     }
 
       get = () => {
@@ -121,6 +123,9 @@ class EditBeverage extends Component {
     
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
                 <div style={{height:60}}  />
@@ -239,7 +244,8 @@ class EditBeverage extends Component {
         <br />
       <Grid style={{paddingLeft:'10px'}} >
        <Button type="submit"  variant="contained" color="primary"> UPDATE  </Button> &nbsp;
-       <Button  onClick={() => {window.location.pathname = "/user/beverage"}} variant="contained" color="secondary"> CANCEL  </Button>
+       <Button onClick={ () => { this.setState({ redirect: "/user/beverage" })}}
+       variant="contained" color="secondary"> CANCEL  </Button>
        </Grid>
     </form>
     </div> 

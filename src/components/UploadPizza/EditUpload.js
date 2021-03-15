@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
+import { Redirect } from "react-router-dom";
 import {Grid, Container, Checkbox, FormControlLabel, withStyles } from '@material-ui/core';
 import { Formik} from "formik";
 import * as yup from "yup";
@@ -94,6 +95,7 @@ class EditUpload extends Component {
             size_datas: [],
             records:[],
             sizes:[],
+            redirect: null
       };
       }
 
@@ -142,14 +144,16 @@ class EditUpload extends Component {
         axios.get('/PizzaSize')
         .then( result =>{
           this.setState({
-            size_datas: result.data,
-            
+            size_datas: result.data,            
             });
         });
       }
 
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
     <div>
         <div style={{height:60}}  />
@@ -328,7 +332,8 @@ class EditUpload extends Component {
         </Grid>
         <Grid style={{paddingLeft:'10px'}} >
        <Button type="submit"  variant="contained" color="primary"> UPDATE  </Button> &nbsp;
-       <Button  onClick={() => {window.location.pathname = "/user/viewcatalog"}} variant="contained" color="secondary"> CANCEL  </Button>
+       <Button  onClick={ () => { this.setState({ redirect: "/user/viewcatalog" })}}
+        variant="contained" color="secondary"> CANCEL  </Button>
        </Grid>
     </form>
     </div>  

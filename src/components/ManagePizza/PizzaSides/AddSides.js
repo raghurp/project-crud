@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import {Container, Grid, withStyles } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import { Formik} from "formik";
+import { Redirect } from "react-router-dom";
 import * as yup from "yup";
 import '../Styles/style.css'
 import ReactNotification from 'react-notifications-component'
@@ -71,12 +72,15 @@ class AddSides extends Component {
           imgUrl: "",
           type:"",
           price: "",
-        
+          redirect: null        
       };
       }
 
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
                 <div style={{height:60}}  />
@@ -190,7 +194,7 @@ class AddSides extends Component {
                       )}
         <Grid style={{paddingLeft:'10px'}} >
        <Button type="submit"  variant="contained" color="primary"> ADD  </Button> &nbsp;
-       <Button  onClick={() => {window.location.pathname = "/user/pizzasides"}} variant="contained" color="secondary"> CANCEL  </Button>
+       <Button  onClick={ () => { this.setState({ redirect: "/user/pizzasides" })}} variant="contained" color="secondary"> CANCEL  </Button>
        </Grid>
     </form>
     </div>

@@ -10,7 +10,7 @@ import ReactNotification from 'react-notifications-component'
 import {store} from "react-notifications-component";
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-
+import { Redirect } from "react-router-dom";
 
 const styles = theme => ({
     root: {
@@ -75,13 +75,15 @@ class EditSize extends Component {
           price: "",
           crustAvail:[],
           crust_datas:[],
-          checkboxData:[]
+          checkboxData:[],
+          redirect: null
       };
       }
 
       componentDidMount() {
         this.get();
         this.getCrust();
+        window.scrollTo(0, 0);
     }
 
     crustSelection(e){
@@ -148,6 +150,9 @@ class EditSize extends Component {
       // }
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
                 <div style={{height:60}}  />
@@ -270,7 +275,8 @@ class EditSize extends Component {
         </Grid>
         <Grid style={{paddingLeft:'10px'}} >
        <Button type="submit"  variant="contained" color="primary"> UPDATE  </Button> &nbsp;
-       <Button  onClick={() => {window.location.pathname = "/user/pizzasize"}} variant="contained" color="secondary"> CANCEL  </Button>
+       <Button onClick={ () => { this.setState({ redirect: "/user/pizzasize" })}} 
+       variant="contained" color="secondary"> CANCEL  </Button>
        </Grid>
     </form>
     </div>  

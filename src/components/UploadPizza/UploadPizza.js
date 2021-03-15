@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import ReactNotification from 'react-notifications-component'
@@ -17,7 +18,7 @@ const styles = theme => ({
   root: {
       '& .MuiTextField-root': {
           margin: theme.spacing(1),
-          width: '90ch',
+          width: '60ch',
         },
       },
       normalTextField: {
@@ -84,15 +85,14 @@ class UploadPizza extends Component {
       records:[],
       sizes:[],
       vegTop:[],
-      nonvegTop:[]
-
-    
+      nonvegTop:[],
+      redirect: null    
   };
   }
   componentDidMount() {
-    this.getSize()
-    this.getVegToppings()
-    this.getNonVegToppings()
+    this.getSize();
+    this.getVegToppings();
+    this.getNonVegToppings();
   }
 
   getSize = () => {
@@ -112,6 +112,7 @@ class UploadPizza extends Component {
         });
     });
   }
+
 
   getNonVegToppings = () => {
     axios.get('/nonVegToppings')
@@ -197,6 +198,9 @@ class UploadPizza extends Component {
 
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
           <div > 
           <div style={{height:60}}  />
@@ -321,8 +325,8 @@ class UploadPizza extends Component {
                       )}
         <br />
 
-      <TextField id="select" label="Type" value="20" select 
-      required
+      <TextField id="select" label="Type" select 
+      
       onChange={handleChange}
       onBlur={handleBlur}
       name="type">
@@ -373,7 +377,7 @@ class UploadPizza extends Component {
 
         <Grid style={{paddingLeft:'10px'}} >
        <Button  type="submit"  variant="contained" color="primary"> ADD  </Button> &nbsp;
-       <Button  onClick={() => {window.location.pathname = "/user/viewcatalog"}} variant="contained" color="secondary"> CANCEL  </Button>
+       <Button  onClick={ () => { this.setState({ redirect: "/user/viewcatalog" })}} variant="contained" color="secondary"> CANCEL  </Button>
        </Grid>
     </form>
     </div>

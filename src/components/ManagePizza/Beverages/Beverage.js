@@ -12,7 +12,7 @@ import StyledTableCell from '@material-ui/core/TableCell';
 import { Button ,TableRow} from '@material-ui/core';
 import TableBody from '@material-ui/core/TableBody';
 import {withStyles } from '@material-ui/core';
-
+import { Redirect } from "react-router-dom";
 import ReactNotification from 'react-notifications-component'
 import {store} from "react-notifications-component";
 import TextField from '@material-ui/core/TextField';
@@ -69,7 +69,8 @@ class Beverage extends Component {
           open: false,
           page: 0,
           rowsPerPage:4,
-      search: ""  
+          search: "",
+          redirect: null
       };
     }
 
@@ -113,7 +114,7 @@ class Beverage extends Component {
           }
   
       edit = (id) => {
-          window.location.pathname = ("/user/editbeverage/"+id);
+        this.setState({ redirect: "/user/editbeverage/"+id});
       }
   
       delete = (id, e) => {
@@ -134,19 +135,22 @@ class Beverage extends Component {
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, 
         this.state.records.length - this.state.page * this.state.rowsPerPage);
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
                 <div style={{height:60}}  />
                     <h1 className="header" >Beverage List</h1>
 
     <Grid style={{paddingLeft:'270px'}}>
-    <Button onClick={() => {window.location.pathname = "/user/addbeverage"}} 
+    <Button onClick={ () => { this.setState({ redirect: "/user/addbeverage" })}}
     variant="contained" color="primary"> Add Beverage <AddIcon /> </Button> &nbsp; 
-    <div className="searchBox" style={{float:'right'}}>
+    {/* <div className="searchBox" style={{float:'right'}}>
   <TextField
         className={classes.margin}
         id="input-with-icon-textfield"
-        label="Search by Topping Name"
+        label="Search by Beverage Name"
         onChange={this.onSearch}
         InputProps={{
           startAdornment: (
@@ -156,7 +160,7 @@ class Beverage extends Component {
           ),
         }}
       />
-    </div>
+    </div> */}
     </Grid> 
     <div style={{height:8}}  /> 
     <div style={{paddingLeft:'270px'}}>     

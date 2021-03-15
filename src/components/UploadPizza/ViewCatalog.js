@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import {withStyles } from '@material-ui/core';
+import { Redirect } from "react-router-dom";
 import axios from 'axios';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -55,6 +56,7 @@ class ViewCatalog extends Component {
       page: 0,
       open: false,
       rowsPerPage:4,
+      redirect: null
   };
 }
 
@@ -85,10 +87,11 @@ handleChangeRowsPerPage = (event) => {
 
 componentDidMount() {
   this.get()
+  window.scrollTo(0, 0);
 }
 
 edit = (id) => {
-  window.location.pathname = ("/user/editpizza/"+id);
+  this.setState({ redirect: "/user/editpizza/"+id});
 }
 
 
@@ -112,12 +115,15 @@ get = () => {
 }
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
   <div style={{paddingLeft:'270px'}}> 
   <div style={{height:60}}  />
     
-  <h1 style={{color:'#3f51b5', fontFamily: 'Source Sans Pro'}} >Pizza List</h1>     
-  <Button onClick={() => {window.location.pathname = "/user/upload"}} 
+  <h1 style={{color:'#3f51b5'}} >Pizza List</h1>     
+  <Button onClick={ () => { this.setState({ redirect: "/user/upload" })}}
             variant="contained" color="primary"> Add Pizza <AddIcon /> </Button> &nbsp;
             <div style={{height:8}}  />
     <TableContainer component={Paper}>

@@ -8,7 +8,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import { Formik} from "formik";
 import * as yup from "yup";
 import './Styles/style.css'
-
+import { Redirect } from "react-router-dom";
 import ReactNotification from 'react-notifications-component'
 import {store} from "react-notifications-component";
 
@@ -73,10 +73,9 @@ class AddSize extends Component {
           size:"",
           serves: "",
           price: "",
-        
+          redirect: null        
       };
       }
-
 
       componentDidMount() {
         this.getCrust()
@@ -108,6 +107,9 @@ class AddSize extends Component {
 
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
         <div style={{height:60}}  />
@@ -227,7 +229,7 @@ class AddSize extends Component {
 
       <Grid style={{paddingLeft:'10px'}} >
        <Button type="submit"  variant="contained" color="primary"> ADD  </Button> &nbsp;
-       <Button  onClick={() => {window.location.pathname = "/user/pizzasize"}} variant="contained" color="secondary"> CANCEL  </Button>
+       <Button onClick={ () => { this.setState({ redirect: "/user/pizzasize" })}} variant="contained" color="secondary"> CANCEL  </Button>
        </Grid>
     </form>
     </div>  

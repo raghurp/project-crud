@@ -100,11 +100,10 @@ export default function Topbar() {
       >
         <Toolbar>
           
-          <img className="logo-image" className={classes.logo} src="https://www.humanrightslogo.net/sites/default/files/HRLogoCMYKsmallRGB.png" />
+          <img className="logo-image" className={classes.logo} src="https://www.freelogodesign.org/file/app/client/thumb/6ecd129a-c59b-42cf-8f75-48bed9618105_200x200.png?1615310346497" />
           <Typography variant="h6" noWrap style={{color:'#081218'}}>
-            Pizza Box
-          </Typography>
-          
+           <p> Pizza Bay </p>
+          </Typography>          
           <div className={classes.profileButton} >
 
           <IconButton color="default" aria-label="add to shopping cart">
@@ -137,11 +136,8 @@ export default function Topbar() {
                 open={opens}
                 onClose={handleClose}
               >
-              <MenuItem onClick={handleClose}> <Link to="/user/profile" style={{ textDecoration: 'none'}}>
-             My Profile </Link> </MenuItem>
-              <MenuItem onClick={handleClose}> <Link to="/user/dashboard" style={{ textDecoration: 'none'}}>
-             Dashboard</Link> </MenuItem>
-                <MenuItem onClick={logout}>Logout</MenuItem>
+              <MenuItem onClick={handleClose}> <a> My profile </a></MenuItem>
+              <MenuItem onClick={logout}> <a> Logout </a> </MenuItem>
               </Menu>
             </div>
 

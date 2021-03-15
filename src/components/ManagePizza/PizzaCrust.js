@@ -12,13 +12,12 @@ import StyledTableCell from '@material-ui/core/TableCell';
 import { Button ,TableRow} from '@material-ui/core';
 import TableBody from '@material-ui/core/TableBody';
 import {withStyles } from '@material-ui/core';
-
+import { Redirect } from "react-router-dom";
 import ReactNotification from 'react-notifications-component'
 import {store} from "react-notifications-component";
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -71,7 +70,8 @@ class PizzaCrust extends Component {
           page: 0,
           rowsPerPage:4,
           open: false,
-      search: "" 
+          search: "" ,
+          redirect: null
       
       };
     }
@@ -116,7 +116,7 @@ class PizzaCrust extends Component {
         }
 
     edit = (id) => {
-        window.location.pathname = ("/user/editcrust/"+id);
+        this.setState({ redirect: "/user/editcrust/"+id});
     }
 
     delete = (id, e) => {
@@ -137,13 +137,16 @@ class PizzaCrust extends Component {
       const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, 
         this.state.records.length - this.state.page * this.state.rowsPerPage);
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
                  <div style={{height:60}}  />
                     <h1 className="header" >Crust List</h1>
 
     <Grid style={{paddingLeft:'270px'}}>
-    <Button onClick={() => {window.location.pathname = "/user/addcrust"}} 
+    <Button onClick={ () => { this.setState({ redirect: "/user/addcrust" })}}
     variant="contained" color="primary"> Add Crust <AddIcon /> </Button> &nbsp; 
     <div className="searchBox" style={{float:'right'}}>
   <TextField

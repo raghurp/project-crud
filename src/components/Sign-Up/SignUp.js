@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Redirect } from "react-router-dom";
 import axios from 'axios';
 import ReactNotification from 'react-notifications-component'
 import {store} from "react-notifications-component";
@@ -91,6 +92,11 @@ function notifcation(){
 export default function SignUp() {
   const classes = useStyles();
   const [errorMessage, setErrorMessage] = useState('');
+  const [redirect, setRedirect] = useState(null);
+
+  if (redirect) {
+    return <Redirect to={redirect} />
+  }
   return (
     
     <Container component="main" maxWidth="xs">
@@ -148,18 +154,17 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit} >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
+                required
                 name="username"
                 variant="outlined"
-                required
                 fullWidth
                 id="username"
                 label="Username"
-                autoFocus
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -234,7 +239,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" onClick={() => {window.location.pathname = "/"}}  variant="body2">
+              <Link href="#" onClick={() => { setRedirect("/")}}  variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

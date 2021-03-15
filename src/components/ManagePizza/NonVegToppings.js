@@ -12,7 +12,7 @@ import StyledTableCell from '@material-ui/core/TableCell';
 import { Button ,TableRow} from '@material-ui/core';
 import TableBody from '@material-ui/core/TableBody';
 import {withStyles } from '@material-ui/core';
-
+import { Redirect } from "react-router-dom";
 import ReactNotification from 'react-notifications-component'
 import {store} from "react-notifications-component";
 import TextField from '@material-ui/core/TextField';
@@ -26,8 +26,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TablePagination from '@material-ui/core/TablePagination';
-
-
 
 function notifcation(){
   store.addNotification({
@@ -70,7 +68,8 @@ class VegToppings extends Component {
           open: false,
           page: 0,
           rowsPerPage:4,
-      search: ""  
+          search: "",
+          redirect: null
       };
       this.handlePageClick = this.handlePageClick.bind(this);
     }
@@ -136,7 +135,7 @@ class VegToppings extends Component {
           }
   
       edit = (id) => {
-          window.location.pathname = ("/user/editnonvegtoppings/"+id);
+        this.setState({ redirect: "/user/editnonvegtoppings/"+id});
       }
   
       delete = (id, e) => {
@@ -156,13 +155,16 @@ class VegToppings extends Component {
         const { classes } = this.props;
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, 
         this.state.records.length - this.state.page * this.state.rowsPerPage);
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
                 <div style={{height:60}}  />
                     <h1 className="header" >Toppings List</h1>
 
     <Grid style={{paddingLeft:'270px'}}>
-    <Button onClick={() => {window.location.pathname = "/user/addnonvegtoppings"}} 
+    <Button onClick={ () => { this.setState({ redirect: "/user/addnonvegtoppings" })}}
     variant="contained" color="primary"> Add Toppings <AddIcon /> </Button> &nbsp; 
     <div className="searchBox" style={{float:'right'}}>
   <TextField

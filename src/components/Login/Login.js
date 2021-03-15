@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, TextField, Button, InputAdornment} from '@material-ui/core';
 import { LockRounded, AccountCircle } from "@material-ui/icons"
+import { Redirect } from "react-router-dom";
 import axios from 'axios';
 
 export default class Login extends Component {
@@ -15,7 +16,8 @@ export default class Login extends Component {
             isLogged: false,
             store: null,
             username: null,
-            user: null
+            user: null,
+            redirect: null
         }
     }
     
@@ -56,6 +58,9 @@ export default class Login extends Component {
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+          }
         return (
             <div>
                 <div >
@@ -71,9 +76,9 @@ export default class Login extends Component {
                     <div >
                         {/* Logo Image */}
                         <Grid container justify="center">
-                            <img src= "https://www.humanrightslogo.net/sites/default/files/HRLogoCMYKsmallRGB.png" width={100} alt="Logo"/>
+                            <img src= "https://www.freelogodesign.org/file/app/client/thumb/65a78ac2-d472-4b4d-8352-0c9fd9f8ecd6_200x200.png?1615309589022" width={140} alt="Logo"/>
                         </Grid>
-                        { this.state.isLogged ? <h5 className="errormessage">Please Enter a Valid Password and Email</h5> : " "}
+                        { this.state.isLogged ? <h5 style={{color:'red'}} >Please Enter a Valid Password and Email</h5> : " "}
                         <TextField type="email" onChange={(event) => { this.setState({ email: event.target.value }) }}
                         label='EMAIL' required name="email" fullWidth  
                         InputProps={{startAdornment: <InputAdornment position="start"> <AccountCircle /> </InputAdornment>}} /> <br />
@@ -95,7 +100,7 @@ export default class Login extends Component {
                                 
                     <Grid item>
                         <Button 
-                        onClick={() => {window.location.pathname = "/signup"}} 
+                        onClick= { () => { this.setState({ redirect: "/signup" })}}
                         color="primary" >Signup</Button>
                     </Grid>
                 </Grid>

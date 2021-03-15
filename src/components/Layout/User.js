@@ -6,6 +6,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { menu } from "./menu";
 import { hasChildren } from "./utils";
@@ -13,8 +15,7 @@ import TopNav from "../Layout/TopNav";
 import './layoutdesign.css'
 
 
-export default function User() {
- 
+export default function User() { 
   return <div className = "sidebar" > 
     {
         menu.map((item, key) => <MenuItem  
@@ -33,19 +34,21 @@ const MenuItem = ({ item }) => {
 };
 
 const SingleLevel = ({ item }) => {
+  let history = useHistory();
   return (
     <div >  
           
     <ListItem style={{color: '#e3e3e3' }}  
     id = {window.location.pathname == item.link ? "active" : " "}
     button onClick={() => {
+      
       window.location.pathname = item.link
       }}
      
       >
       <ListItemIcon style={{color: 'white'}}>{item.icon}</ListItemIcon>
      
-      <ListItemText  primary={item.title} /> 
+     <ListItemText  primary={item.title} /> 
     </ListItem>
     </div>
   );
@@ -67,7 +70,7 @@ const MultiLevel = ({ item }) => {
     <React.Fragment>
       <ListItem  button onClick={handleClick}>
         <ListItemIcon style={{color: 'white'}} >{item.icon}</ListItemIcon>
-        <ListItemText primary={item.title} />
+       <ListItemText primary={item.title} /> 
         {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
       <Collapse in={ open } style={{ width: '100%'}} timeout="auto" unmountOnExit>

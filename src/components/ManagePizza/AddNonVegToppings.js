@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 import { Formik} from "formik";
 import * as yup from "yup";
 import './Styles/style.css'
-
+import { Redirect } from "react-router-dom";
 import ReactNotification from 'react-notifications-component'
 import {store} from "react-notifications-component";
 
@@ -72,12 +72,16 @@ class AddToppings extends Component {
           imgUrl: "",
           type:"",
           price: "",
+          redirect: null
         
       };
       }
 
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
               <div style={{height:60}}  />
@@ -193,7 +197,8 @@ class AddToppings extends Component {
                       )}
         <Grid style={{paddingLeft:'10px'}} >
        <Button type="submit"  variant="contained" color="primary"> ADD  </Button> &nbsp;
-       <Button  onClick={() => {window.location.pathname = "/user/nonvegToppings"}} variant="contained" color="secondary"> CANCEL  </Button>
+       <Button onClick={ () => { this.setState({ redirect: "/user/nonVegToppings" })}}
+        variant="contained" color="secondary"> CANCEL  </Button>
        </Grid>
        
     </form>

@@ -92,11 +92,10 @@ export default function TopNav() {
       >
         <Toolbar>
           
-          <img className="logo-image" className={classes.logo} src="https://www.humanrightslogo.net/sites/default/files/HRLogoCMYKsmallRGB.png" />
-          <Typography variant="h6" style={{fontFamily: 'Alegreya'}} noWrap>
-            Admin Profile
-          </Typography>
-          
+          <img style={{width:'100%'}} className={classes.logo} src="https://www.freelogodesign.org/file/app/client/thumb/6ecd129a-c59b-42cf-8f75-48bed9618105_200x200.png?1615310346497" />
+          <Typography variant="h6" noWrap style={{color:'white'}}>
+            <p> Pizza Bay </p>
+          </Typography>      
           <div className={classes.profileButton} >
               <IconButton  
                 aria-label="account of current user"

@@ -3,6 +3,7 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import {Container, Grid, withStyles } from '@material-ui/core';
 import { Button } from '@material-ui/core';
+import { Redirect } from "react-router-dom";
 import { Formik} from "formik";
 import * as yup from "yup";
 
@@ -68,13 +69,17 @@ class AddCrust extends Component {
           Description: "",
           price: "",
           fields: {},
-          error: false 
+          error: false,
+          redirect: null
         
       };
       }
 
     render() {
         const { classes } = this.props;
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
         return (
             <div>
              <div style={{height:60}}  />
@@ -176,7 +181,7 @@ class AddCrust extends Component {
                       )}
         <Grid style={{paddingLeft:'10px'}} >
        <Button type="submit"  variant="contained" color="primary"> ADD  </Button> &nbsp;
-       <Button  onClick={() => {window.location.pathname = "/user/pizzacrust"}} variant="contained" color="secondary"> CANCEL  </Button>
+       <Button  onClick={ () => { this.setState({ redirect: "/user/pizzacrust" })}} variant="contained" color="secondary"> CANCEL  </Button>
        </Grid>
     </form>
     </div>
