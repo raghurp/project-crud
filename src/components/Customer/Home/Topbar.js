@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,11 +9,34 @@ import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import IconButton from '@material-ui/core/IconButton';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button} from '@material-ui/core';
+import TableCell from '@material-ui/core/TableCell';
+
 import { Menu } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import './HomeStyles/styles.css'
+import CartOutput from '../Menus/car-output/CartOutput';
+import { connect } from 'react-redux';
+import CreateCard from './CreateCard';
 // import './layoutdesign.css'
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -57,12 +80,19 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
+  dialogPaper: {
+    minHeight: '30vh',
+    maxHeight: '80vh',
+    minWidth: '50vh',
+    maxWidth: '160vh'
+},
+table: {
+  minWidth: 650,
+},
+
 }));
 
-
-
-
-export default function Topbar() {
+function Topbar(props) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -70,6 +100,7 @@ export default function Topbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const opens = Boolean(anchorEl);
   const countArray = useState()
+  const [popup, setPopup] = React.useState(false);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -77,6 +108,14 @@ export default function Topbar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handlePopupClose = () => {
+    setPopup(false);
+  };
+
+  const handlePopupOpen = () => {
+    setPopup(true);
   };
   
   const logout = () => {
@@ -100,17 +139,16 @@ export default function Topbar() {
       >
         <Toolbar>
           
-          <img className="logo-image" className={classes.logo} src="https://www.freelogodesign.org/file/app/client/thumb/6ecd129a-c59b-42cf-8f75-48bed9618105_200x200.png?1615310346497" />
+          {/* <img className="logo-image" className={classes.logo} src="https://www.freelogodesign.org/file/app/client/thumb/6ecd129a-c59b-42cf-8f75-48bed9618105_200x200.png?1615310346497" /> */}
           <Typography variant="h6" noWrap style={{color:'#081218'}}>
            <p> Pizza Bay </p>
           </Typography>          
           <div className={classes.profileButton} >
 
-          <IconButton color="default" aria-label="add to shopping cart">
-            <AddShoppingCartIcon />
-          <span className='badge badge-warning' id='lblCartCount'> {countArray.length } </span>
-          </IconButton>
-          
+          <IconButton color="default" aria-label="add to shopping cart" onClick={handlePopupOpen}>
+            <AddShoppingCartIcon  /> 
+          <span className='badge badge-warning' id='lblCartCount'> <CartOutput value={props.crt} /> </span>
+          </IconButton>          
           
               <IconButton  
                 aria-label="account of current user"
@@ -143,7 +181,67 @@ export default function Topbar() {
 
         </Toolbar>
       </AppBar>
+
+      <div>
+      <Dialog 
+      classes={{ paper: classes.dialogPaper }}
+        open={popup}
+        onClose={handlePopupClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Items in your cart"}</DialogTitle>
+        {/* {this.getCrust(x.id)} */}
+        
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          {props.pizzaCartItems.map((row) => (
+            <p key={row.id} >
+            <CreateCard image={row.imgUrl} name={row.name} 
+            descrp={row.desc} price={row.price} cart={props.pizzaCartItems} 
+            url = {"http://localhost:3333/pizzasides/${id}"}/>
+            </p>
+          ))}
+
+          {props.sidesCartItems.map((row) => (
+            <p key={row.id} >
+            <CreateCard image={row.imgUrl} name={row.name} 
+            descrp={row.type} price={row.price} cart={props.sidesCartItems} 
+            url ={"http://localhost:3333/pizzasides/${id}"}/>
+            </p>
+          ))}
+
+          {props.beverageCartItems.map((row) => (
+            <p key={row.id} >
+            <CreateCard image={row.imgUrl} name={row.name} 
+            descrp={row.desc} price={row.price} cart={props.beverageCartItems}
+            url={"http://localhost:3333/beverage/${id}"} />
+            </p>
+          ))}
+          </DialogContentText>
+        </DialogContent>
+         
+        <DialogActions>
+          <Button onClick={handlePopupClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </div>
     </div>
+    
   );
   
 }
+
+const mapStateToProps = state => {
+  return {
+      crt: state.cart,
+      pizzaCartItems: state.pizzaAdded,
+      beverageCartItems: state.beverageAdded,
+      sidesCartItems: state.sidesAdded
+
+  };
+};
+
+export default connect(mapStateToProps, null)(Topbar);

@@ -22,6 +22,9 @@ import pizza3 from './Assets/pizza3.jpg'
 import pizza4 from './Assets/pizza4.jpg'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import CartControl from './cart-control/CartControl';
+import { connect } from 'react-redux';
+
 // Dynamic copyright
 function Copyright() {
   return (
@@ -87,18 +90,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Menus() {
+ function Menus(props) {
   const classes = useStyles();
   const [Records, setRecords] = useState([]);
   const [Sides, setSides] = useState([]);
   const [Beverages, setBeverages] = useState([]);
-  const [CartArray] = useState([]);
+  const [CartArray, setCartArray] = useState([]);
+  const [pizzaCart] = useState([]);
+  const [beverageCart] = useState([]);
+  const [sidesCart] = useState([]);
   const sideRef = useRef(null);
   const bevRef = useRef(null);
   const [Counter, setCounter] = useState(0);
-  const [notNull, setnotNull] = useState(false)
-  const [addQuantity, setaddQuantity]= useState(false);
-  const displayCounter = Counter > 0;
+  
   const [disabledArray, setdisabledArray] = useState([]);
   const [open, setOpen] = React.useState(false);
 
@@ -121,8 +125,14 @@ export default function Menus() {
     }
   };
 // Remove Item
-  const removeItem = () => {
-    setdisabledArray([])
+  const removeItem = (e,id) => {
+    var index = disabledArray.indexOf(id);
+    if (index > -1) {
+      disabledArray.splice(index, 1);
+      var newArray = disabledArray
+      setdisabledArray(newArray);
+      console.log("In if " + disabledArray)
+  }
   }
 
   // Scroll based on ref
@@ -138,42 +148,70 @@ export default function Menus() {
     window.scrollBy(0, -100);
     }
 
-    // push pizza data on click
+  // push pizza data on click
   const getPizza = (id, e) => {
     axios.get(`http://localhost:3333/Pizza/${id}`)
     .then( rel =>{
-      CartArray.push(rel.data)
-      localStorage.setItem('cart', JSON.stringify(CartArray))
       console.log(rel.data)
+      pizzaCart.push(rel.data)
+
+      props.onIncrementPizza(id, pizzaCart)
     });
   } 
+
+// Delete Pizza 
+  const deletePizza = (id, e) => {
+    pizzaCart.splice(pizzaCart.findIndex(function(i){
+        return i.id === id;
+    }), 1);
+      props.onDecrementPizza(id, pizzaCart)  
+  }
+
 // push beverage data on click
   const getBeverage = (id, e) => {
     axios.get(`http://localhost:3333/beverage/${id}`)
     .then( res =>{
-      CartArray.push(res.data)
-      localStorage.setItem('cart', JSON.stringify(CartArray))
       console.log(res.data)
+      beverageCart.push(res.data)
+      console.log("new cart array in beverage" + JSON.stringify(beverageCart))
+
+      props.onIncreasingBeve(id, beverageCart)
     });
   }
+
+  // Delete Beverage
+  const deleteBeverage = (id, e) => {
+    beverageCart.splice(beverageCart.findIndex(function(i){
+      return i.id === id;
+  }), 1);
+      //console.log("new cart array after removing Beverage" + JSON.stringify(beverageCart));
+      props.onDecreasingBeve(id, beverageCart)
+  }
+
+
 // push sides data on click
   const getSides = (id, e) => {
     axios.get(`http://localhost:3333/pizzasides/${id}`)
     .then( resp =>{
-      CartArray.push(resp.data)
-      localStorage.setItem('cart', JSON.stringify(CartArray))
-      console.log(resp.data)
-    });
-    setdisabledArray(disabledArray.concat(id)  )
-    //setCounter(1);
-    //setaddQuantity(true);
+      sidesCart.push(resp.data)
+      // console.log("new cart array" + JSON.stringify(CartArray))
+      props.onIncrementCart(id, sidesCart); 
+    });    
+  }
+
+  // Delete Sides
+  const deleteSides = (id, e) => {
+    sidesCart.splice(sidesCart.findIndex(function(i){
+      return i.id === id;
+  }), 1);
+      // console.log("new cart array after removing" + JSON.stringify(CartArray));
+      props.onDecrementCart(id, sidesCart)
   }
 
   //   Pizza
   useEffect(() => {
     axios.get('http://localhost:3333/Pizza')
       .then(res => {
-        console.log(res.data);
         setRecords(res.data)
       })
       .catch(err => {
@@ -185,7 +223,6 @@ export default function Menus() {
   useEffect(() => {
     axios.get('http://localhost:3333/pizzasides')
       .then(result => {
-        console.log(result.data);
         setSides(result.data)
       })
       .catch(err => {
@@ -197,13 +234,16 @@ export default function Menus() {
   useEffect(() => {
     axios.get('http://localhost:3333/beverage')
       .then(response => {
-        console.log(response.data);
         setBeverages(response.data)
       })
       .catch(err => {
         console.log(err);
       })
   }, []);
+
+  const addToCart = (num) => {
+    console.log('add is clicked' + num);
+  }
 
   return (
     <React.Fragment >
@@ -282,25 +322,12 @@ export default function Menus() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      className={classes.button}
-                    >
-                      CUSTOMISE
-                  </Button>
+                    
+                  <CartControl label="ADD" disableVal ={props.pizzaResult.includes(record.id) ? true : false}
+                    clicked={() => getPizza(record.id)} colour="primary" />  
 
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      className={classes.button}
-                      onClick={(e) => getPizza(record.id, e)}  
-                      startIcon={<AddShoppingCartIcon />}
-                    >
-                      ADD
-                  </Button>
+                    <CartControl label="REMOVE" disableVal ={props.pizzaResult.includes(record.id) ? false : true}
+                    clicked={() => deletePizza(record.id)} colour="secondary" />
                   </CardActions>
                 </Card>
               </Grid>
@@ -339,42 +366,13 @@ export default function Menus() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    
-                      <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      disabled = {disabledArray.indexOf( side.id)!==-1 }
-                      //disabled = {disabledArray.includes(String(side.id)) ? true : false }
-                      className={classes.button}
-                      onClick={(e) => getSides(side.id, e)}
-                      startIcon={<AddShoppingCartIcon />}
-                    >
-                      ADD
-                    </Button> 
-                        {/* Display remove button only if quantity is added */}
-                    {
-                      (addQuantity) ?
-                    
-                    <ButtonGroup size="small" aria-label="small outlined button group">
-                      <Button color="primary" onClick={handleIncrement}>+</Button>
-                      {displayCounter && <Button color="primary">{Counter}</Button>}
-                      {displayCounter && <Button color="primary" disabled={notNull} onClick={handleDecrement}>-</Button>}
-                    </ButtonGroup>
-                    :
-                    ""
-                    }
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      disabled = {false}
-                      className={classes.button}
-                      onClick ={removeItem}
-                    >
-                      Remove
-                    </Button>
-                      
+
+                    <CartControl label="ADD" disableVal ={props.prodResult.includes(side.id) ? true : false}
+                    clicked={() => {getSides(side.id);}} colour="primary" />  
+
+                    <CartControl label="REMOVE" disableVal ={props.prodResult.includes(side.id) ? false : true}
+                    clicked={() => {deleteSides(side.id); }}colour="secondary" /> 
+
                   </CardActions>
                 </Card>
               </Grid>
@@ -424,16 +422,11 @@ export default function Menus() {
                     </Typography>
                   </CardContent>
                   <CardActions >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      className={classes.button}
-                      onClick={(e) => getBeverage(beverage.id, e)}
-                      startIcon={<AddShoppingCartIcon />}
-                    >
-                      ADD
-                    </Button>
+                  <CartControl label="ADD" disableVal ={props.beverageResult.includes(beverage.id) ? true : false}
+                    clicked={() => {getBeverage(beverage.id)} } colour="primary" />  
+
+                    <CartControl label="REMOVE" disableVal ={props.beverageResult.includes(beverage.id) ? false : true}
+                    clicked={() =>deleteBeverage(beverage.id)} colour="secondary" />
                   </CardActions>
                 </Card>
               </Grid>
@@ -461,3 +454,28 @@ export default function Menus() {
     </React.Fragment>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+      crt: state.cart,
+      prodResult: state.prodId,
+      pizzaResult: state.pizzaId,
+      beverageResult: state.beverageId
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+// Sides
+      onIncrementCart: (id, arrayValue) => dispatch({type: 'ADD', value:id, payload:arrayValue}),
+      onDecrementCart: (id, arrayValue) => dispatch({type: 'REMOVE', value:id, payload:arrayValue }),
+// Pizza
+      onIncrementPizza: (id, arrayValue) => dispatch({type: 'INCREMENT', value:id, payload:arrayValue}),
+      onDecrementPizza: (id, arrayValue) => dispatch({type: 'DECREMENT', value:id, payload:arrayValue}),
+// Beverage
+      onIncreasingBeve: (id, arrayValue) => dispatch({type: 'INCREASE', value:id, payload:arrayValue}),
+      onDecreasingBeve: (id, arrayValue) => dispatch({type: 'DECREASE', value:id, payload:arrayValue}),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menus);

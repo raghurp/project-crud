@@ -1,0 +1,12 @@
+                        {/* Display remove button only if quantity is added */}
+                    {
+                      (addQuantity) ?
+                    
+                    <ButtonGroup size="small" aria-label="small outlined button group">
+                      <Button color="primary" onClick={handleIncrement}>+</Button>
+                      {displayCounter && <Button color="primary">{Counter}</Button>}
+                      {displayCounter && <Button color="primary" disabled={notNull} onClick={handleDecrement}>-</Button>}
+                    </ButtonGroup>
+                    :
+                    ""
+                    }

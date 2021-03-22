@@ -239,7 +239,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" onClick={() => { setRedirect("/")}}  variant="body2">
+              <Link  onClick={() => { setRedirect("/")}}  variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
