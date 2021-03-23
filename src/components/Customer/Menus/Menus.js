@@ -13,8 +13,8 @@ import axios from 'axios';
 import Link from '@material-ui/core/Link';
 import { useEffect } from 'react';
 import './MenuStyles/styles.css'
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import ButtonGroup from "@material-ui/core/ButtonGroup";import AliceCarousel from 'react-alice-carousel';
+
+import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
 import pizza1 from './Assets/pizza1.jpg'
 import pizza2 from './Assets/pizza2.jpg'
@@ -316,8 +316,7 @@ const useStyles = makeStyles((theme) => ({
                   &nbsp;
                   </Typography>
                     </Grid>
-                    <Typography>
-                    ₹
+                    <Typography style={{color:'green', fontWeight:'bold'}}>  ₹
                   {parseFloat(record.price).toFixed(2)}
                     </Typography>
                   </CardContent>
@@ -360,8 +359,7 @@ const useStyles = makeStyles((theme) => ({
                     &nbsp;
                     </Typography>
                     </Grid>
-                    <Typography>
-                      ₹
+                    <Typography style={{color:'green', fontWeight:'bold'}}> ₹
                     {parseFloat(side.price).toFixed(2)}
                     </Typography>
                   </CardContent>
@@ -379,14 +377,6 @@ const useStyles = makeStyles((theme) => ({
             ))}
           </Grid>
         </Container>
-{/* Show warning when tried to decrease less than 1 */}
-      <div className={classes.root}>
-      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="warning">
-          Quantity cannot be zero, Try removing
-        </Alert>
-      </Snackbar>
-      </div>
       </div>
 
       {/* For Beverages */}
@@ -416,9 +406,8 @@ const useStyles = makeStyles((theme) => ({
                       </Typography>
                     </Grid>
 
-                    <Typography>
-                      ₹
-                    {parseFloat(beverage.price).toFixed(2)}
+                    <Typography style={{color:'green', fontWeight:'bold'}}>
+                        ₹ {parseFloat(beverage.price).toFixed(2)}
                     </Typography>
                   </CardContent>
                   <CardActions >

@@ -5,6 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
+import GroupedButton from './GroupedButton.js';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '100%',
       }
 }));
-
 
 
 const CreateCard = (props) => {
@@ -67,13 +68,18 @@ const CreateCard = (props) => {
               </Grid>
               <Grid item>
                 <Typography variant="body2" onClick={() => removeCart(props.id, props.conditionValue)} 
-                style={{ cursor: 'pointer', color:'red' }}>
+                style={{ cursor: 'pointer', color:'red', width: '3px' }}>
                   Remove
                 </Typography>
+                
               </Grid>
+
+              
             </Grid>
             <Grid item>
-              <Typography variant="subtitle1" style={{color:'#31e05d'}}>₹{props.price}</Typography>
+                <Typography>
+                  <GroupedButton price={props.price} />
+                </Typography>
             </Grid>
           </Grid>
         </Grid>

@@ -225,7 +225,6 @@ function Topbar(props) {
             </p>
           ))}
 
-
           </DialogContentText>
         </DialogContent>
          
