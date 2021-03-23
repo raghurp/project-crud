@@ -92,7 +92,7 @@ export default function TopNav() {
       >
         <Toolbar>
           
-          <img style={{width:'100%'}} className={classes.logo} src="https://www.freelogodesign.org/file/app/client/thumb/6ecd129a-c59b-42cf-8f75-48bed9618105_200x200.png?1615310346497" />
+          <img style={{width:'100%'}} className={classes.logo} src="https://image.shutterstock.com/image-vector/retro-vintage-pizza-logo-typography-600w-1379701046.jpg" />
           <Typography variant="h6" noWrap style={{color:'white'}}>
             <p> Pizza Bay </p>
           </Typography>      

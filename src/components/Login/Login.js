@@ -76,7 +76,7 @@ export default class Login extends Component {
                     <div >
                         {/* Logo Image */}
                         <Grid container justify="center">
-                            <img src= "https://www.freelogodesign.org/file/app/client/thumb/65a78ac2-d472-4b4d-8352-0c9fd9f8ecd6_200x200.png?1615309589022" width={140} alt="Logo"/>
+                            <img src= "https://st2.depositphotos.com/3687485/9049/v/950/depositphotos_90493674-stock-illustration-pizza-flat-icon-logo-template.jpg" width={140} alt="Logo"/>
                         </Grid>
                         { this.state.isLogged ? <h5 style={{color:'red'}} >Please Enter a Valid Password and Email</h5> : " "}
                         <TextField type="email" onChange={(event) => { this.setState({ email: event.target.value }) }}

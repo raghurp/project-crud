@@ -4,6 +4,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,8 +26,25 @@ const useStyles = makeStyles((theme) => ({
       }
 }));
 
+
+
 const CreateCard = (props) => {
     const classes = useStyles();
+
+    const removeCart = (id, condition) => {
+      props.cart.splice(props.cart.findIndex(function(i){
+        return i.id === id;
+    }), 1);
+    if(condition === "pizza"){
+      props.deletePizza(id, props.cart );
+    }
+    if(condition === "sides"){
+      props.deleteSides(id, props.cart);
+    }
+    if(condition === "beverage"){
+      props.deleteBeverage(id, props.cart);
+    }
+    }
   
     return (
         <div className={classes.root}>
@@ -48,7 +66,8 @@ const CreateCard = (props) => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Typography variant="body2" style={{ cursor: 'pointer', color:'red' }}>
+                <Typography variant="body2" onClick={() => removeCart(props.id, props.conditionValue)} 
+                style={{ cursor: 'pointer', color:'red' }}>
                   Remove
                 </Typography>
               </Grid>
@@ -63,4 +82,15 @@ const CreateCard = (props) => {
   );
     }
 
-export default CreateCard
+    const mapDispatchToProps = dispatch => {
+      return {
+    // Sides
+          deleteSides: (id, arrayValue) => dispatch({type: 'REMOVE', value:id, payload:arrayValue }),
+    // Pizza
+          deletePizza: (id, arrayValue) => dispatch({type: 'DECREMENT', value:id, payload:arrayValue}),
+    // Beverage
+          deleteBeverage: (id, arrayValue) => dispatch({type: 'DECREASE', value:id, payload:arrayValue}),
+      };
+    };
+
+export default connect(null, mapDispatchToProps) (CreateCard)

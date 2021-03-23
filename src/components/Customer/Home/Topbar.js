@@ -140,6 +140,7 @@ function Topbar(props) {
         <Toolbar>
           
           {/* <img className="logo-image" className={classes.logo} src="https://www.freelogodesign.org/file/app/client/thumb/6ecd129a-c59b-42cf-8f75-48bed9618105_200x200.png?1615310346497" /> */}
+          <img style={{width:'100%'}} className={classes.logo} src="https://image.shutterstock.com/image-vector/retro-vintage-pizza-logo-typography-600w-1379701046.jpg" />
           <Typography variant="h6" noWrap style={{color:'#081218'}}>
            <p> Pizza Bay </p>
           </Typography>          
@@ -190,34 +191,41 @@ function Topbar(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Items in your cart"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{ <center style={{color:'blue'}}> ITEMS IN YOUR CART </center>}</DialogTitle>
         {/* {this.getCrust(x.id)} */}
         
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
+          {
+            (props.pizzaCartItems.length < 1 && props.sidesCartItems.length < 1 &&
+              props.beverageCartItems.length < 1)  ? <center> &#128543; No Items in the cart </center> : "" }
+          
+
           {props.pizzaCartItems.map((row) => (
             <p key={row.id} >
-            <CreateCard image={row.imgUrl} name={row.name} 
+            <CreateCard id={row.id} image={row.imgUrl} name={row.name} 
             descrp={row.desc} price={row.price} cart={props.pizzaCartItems} 
-            url = {"http://localhost:3333/pizzasides/${id}"}/>
+            conditionValue={"pizza"} />
             </p>
           ))}
 
           {props.sidesCartItems.map((row) => (
             <p key={row.id} >
-            <CreateCard image={row.imgUrl} name={row.name} 
-            descrp={row.type} price={row.price} cart={props.sidesCartItems} 
-            url ={"http://localhost:3333/pizzasides/${id}"}/>
+            <CreateCard id={row.id} image={row.imgUrl} name={row.name} 
+            descrp={row.type} price={row.price} cart={props.sidesCartItems}
+            conditionValue={"sides"} />
             </p>
           ))}
 
           {props.beverageCartItems.map((row) => (
             <p key={row.id} >
-            <CreateCard image={row.imgUrl} name={row.name} 
-            descrp={row.desc} price={row.price} cart={props.beverageCartItems}
-            url={"http://localhost:3333/beverage/${id}"} />
+            <CreateCard id={row.id} image={row.imgUrl} name={row.name} 
+            descrp={row.desc} price={row.price} cart={props.beverageCartItems} 
+            conditionValue={"beverage"} />
             </p>
           ))}
+
+
           </DialogContentText>
         </DialogContent>
          
