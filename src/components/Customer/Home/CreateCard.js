@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
@@ -6,20 +6,37 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
 import GroupedButton from './GroupedButton.js';
+import axios from 'axios';
+import { useEffect } from 'react';
+
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        borderBlock:3
       },
       paper: {
         padding: theme.spacing(2),
         margin: 'auto',
         maxWidth: 500,
+        borderBlockColor: 'red'
       },
       image: {
         width: 128,
         height: 128,
+      },
+      formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+      },
+      selectEmpty: {
+        marginTop: theme.spacing(2),
       },
       img: {
         display: 'block',
@@ -27,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '100%',
       }
 }));
-
 
 const CreateCard = (props) => {
     const classes = useStyles();
@@ -45,17 +61,13 @@ const CreateCard = (props) => {
     if(condition === "beverage"){
       props.deleteBeverage(id, props.cart);
     }
-    }
+    }  
   
     return (
         <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Grid container spacing={2}>
-          <Grid item>
-            <ButtonBase >
-              <img className={classes.img} alt="complex" src={props.image} />
-            </ButtonBase>
-          </Grid>
+        <Grid border={3} container spacing={2}>
+          
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
@@ -72,10 +84,9 @@ const CreateCard = (props) => {
                   Remove
                 </Typography>
                 
-              </Grid>
-
-              
+              </Grid>              
             </Grid>
+            
             <Grid item>
                 <Typography>
                   <GroupedButton price={props.price} />
@@ -83,8 +94,10 @@ const CreateCard = (props) => {
             </Grid>
           </Grid>
         </Grid>
+        
       </Paper>
-    </div>    
+      
+    </div> 
   );
     }
 

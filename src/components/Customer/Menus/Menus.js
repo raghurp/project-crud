@@ -14,16 +14,19 @@ import Link from '@material-ui/core/Link';
 import { useEffect } from 'react';
 import './MenuStyles/styles.css'
 
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
 import pizza1 from './Assets/pizza1.jpg'
 import pizza2 from './Assets/pizza2.jpg'
 import pizza3 from './Assets/pizza3.jpg'
 import pizza4 from './Assets/pizza4.jpg'
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import CartControl from './cart-control/CartControl';
 import { connect } from 'react-redux';
+import SelectComponent from './SelectComponent/SelectComponent';
 
 // Dynamic copyright
 function Copyright() {
@@ -95,45 +98,15 @@ const useStyles = makeStyles((theme) => ({
   const [Records, setRecords] = useState([]);
   const [Sides, setSides] = useState([]);
   const [Beverages, setBeverages] = useState([]);
-  const [CartArray, setCartArray] = useState([]);
   const [pizzaCart] = useState([]);
   const [beverageCart] = useState([]);
   const [sidesCart] = useState([]);
   const sideRef = useRef(null);
   const bevRef = useRef(null);
-  const [Counter, setCounter] = useState(0);
-  
-  const [disabledArray, setdisabledArray] = useState([]);
+  const [SizeArray, setSizeArray] = useState([]);
+  const [sizeName, setSizeName] = React.useState(null);
+  const [sizePrice, setSizePrice] = React.useState(null);
   const [open, setOpen] = React.useState(false);
-
-  // Notification close
-  const handleClose = () => {
-    setOpen(false);
-  };
-// Quantity increment
-  const handleIncrement = () => {
-      setCounter( Counter + 1);
-  };
-// Quantity Decrement
-  const handleDecrement = () => {
-    if(Counter >  1 ){
-    setCounter(Counter - 1);
-    } 
-    else{
-      setCounter(Counter + 0);
-      setOpen(true)
-    }
-  };
-// Remove Item
-  const removeItem = (e,id) => {
-    var index = disabledArray.indexOf(id);
-    if (index > -1) {
-      disabledArray.splice(index, 1);
-      var newArray = disabledArray
-      setdisabledArray(newArray);
-      console.log("In if " + disabledArray)
-  }
-  }
 
   // Scroll based on ref
   const sideScroll = () => {
@@ -152,7 +125,6 @@ const useStyles = makeStyles((theme) => ({
   const getPizza = (id, e) => {
     axios.get(`http://localhost:3333/Pizza/${id}`)
     .then( rel =>{
-      console.log(rel.data)
       pizzaCart.push(rel.data)
 
       props.onIncrementPizza(id, pizzaCart)
@@ -171,7 +143,6 @@ const useStyles = makeStyles((theme) => ({
   const getBeverage = (id, e) => {
     axios.get(`http://localhost:3333/beverage/${id}`)
     .then( res =>{
-      console.log(res.data)
       beverageCart.push(res.data)
       console.log("new cart array in beverage" + JSON.stringify(beverageCart))
 
@@ -212,7 +183,7 @@ const useStyles = makeStyles((theme) => ({
   useEffect(() => {
     axios.get('http://localhost:3333/Pizza')
       .then(res => {
-        setRecords(res.data)
+        setRecords(res.data);
       })
       .catch(err => {
         console.log(err);
@@ -241,9 +212,33 @@ const useStyles = makeStyles((theme) => ({
       })
   }, []);
 
-  const addToCart = (num) => {
-    console.log('add is clicked' + num);
-  }
+// Pizza sizes
+  useEffect(() => {
+    axios.get('http://localhost:3333/PizzaSize')
+      .then(res => {
+        setSizeArray(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })      
+  },
+   []);
+
+   const onGettingSizeValue = (name, price) => { 
+    setSizeName(name)
+    setSizePrice(price);
+  };
+
+  // const selectSizes = (num) => {
+  //   num.map((val, i) => {
+  //     axios.get(`http://localhost:3333/PizzaSize/${val}`)
+  //    .then( res =>{
+  //     SizeArray.push(res.data)         
+  //     //  SizeArray.push(JSON.stringify(res.data.size));       
+  //    })
+  //   }, [])
+  //   console.log("Inside fuction " + JSON.stringify(SizeArray))
+  // }
 
   return (
     <React.Fragment >
@@ -313,15 +308,36 @@ const useStyles = makeStyles((theme) => ({
                     <Grid style={{ height: '85px' }}>
                       <Typography>
                         {record.desc}
-                  &nbsp;
-                  </Typography>
+                      &nbsp;
+                      </Typography>
                     </Grid>
+
+                    <Grid>
+                      <Typography>
+                        {console.log("size name " + sizeName)}
+                        <SelectComponent getSizePrice={setSizePrice} getSizeName={setSizeName} size={record.sizes} id={record.id} />
+                      </Typography>
+                    </Grid>
+
                     <Typography style={{color:'green', fontWeight:'bold'}}>  ₹
-                  {parseFloat(record.price).toFixed(2)}
+                  {parseFloat(record.price).toFixed(2)} &nbsp; &nbsp;                    
+
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={null}
+                      disabled={false}                      
+                      //disabled = {props.arr.indexOf(props.ids)!==-1 }                      onClick={props.clicked}
+                      startIcon={<AddShoppingCartIcon />}
+                    >
+                      Customize
+                    </Button>
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    
+                  
+                    <br />
                   <CartControl label="ADD" disableVal ={props.pizzaResult.includes(record.id) ? true : false}
                     clicked={() => getPizza(record.id)} colour="primary" />  
 
@@ -364,7 +380,7 @@ const useStyles = makeStyles((theme) => ({
                     </Typography>
                   </CardContent>
                   <CardActions>
-
+                  
                     <CartControl label="ADD" disableVal ={props.prodResult.includes(side.id) ? true : false}
                     clicked={() => {getSides(side.id);}} colour="primary" />  
 

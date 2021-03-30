@@ -6,7 +6,9 @@ const initialState = {
     beverageId:[],
     sidesAdded:[],
     pizzaAdded:[],
-    beverageAdded:[]
+    beverageAdded:[],
+    sizeName: '',
+    sizePrice: ''
 }
 
 
@@ -19,7 +21,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             prodId: [action.value, ...state.prodId],
             cart: state.cart + 1,
-            sidesAdded: action.payload    
+            sidesAdded: action.payload,    
         }
     }
     // Decresae side
@@ -41,7 +43,10 @@ const reducer = (state = initialState, action) => {
             ...state,
             pizzaId: [action.value, ...state.pizzaId],
             cart: state.cart + 1,
-            pizzaAdded:action.payload         
+            pizzaAdded:action.payload,
+            sizeName: action.sizeName,
+            sizePrice: action.sizePrice
+
         } 
     }
 // Decrement Pizza

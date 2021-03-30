@@ -25,3 +25,4 @@
 [0123/225828.828:ERROR:exception_snapshot_win.cc(99)] thread ID 12724 not found in process
 [0127/092819.988:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
 [0128/093726.271:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0326/152050.827:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\Home\AppData\Local\Google\Chrome\User Data\Crashpad\reports\df5204a6-6b60-42c4-8fab-26edd6192c64.dmp: The process cannot access the file because it is being used by another process. (0x20)

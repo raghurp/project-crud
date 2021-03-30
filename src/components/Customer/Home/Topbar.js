@@ -81,10 +81,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 0,
   },
   dialogPaper: {
-    minHeight: '30vh',
-    maxHeight: '80vh',
-    minWidth: '50vh',
-    maxWidth: '160vh'
+    minHeight: '90vh',
+    minWidth: '90vh'
 },
 table: {
   minWidth: 650,
@@ -198,17 +196,27 @@ function Topbar(props) {
           <DialogContentText id="alert-dialog-description">
           {
             (props.pizzaCartItems.length < 1 && props.sidesCartItems.length < 1 &&
-              props.beverageCartItems.length < 1)  ? <center> &#128543; No Items in the cart </center> : "" }
-          
+              props.beverageCartItems.length < 1)  ? <center>  &#128543; No Items in the cart   </center>: ''}
+{/* Style if pizza cart is not empty   */}
+          {
+            props.pizzaCartItems.length < 1 ? "" :
+            <h2 className="heading"> <span> 	&#127829; </span> </h2> 
+          }
 
           {props.pizzaCartItems.map((row) => (
             <p key={row.id} >
             <CreateCard id={row.id} image={row.imgUrl} name={row.name} 
             descrp={row.desc} price={row.price} cart={props.pizzaCartItems} 
-            conditionValue={"pizza"} />
+            conditionValue={"pizza"} sizevalue={row.sizes} />
             </p>
+            
           ))}
-
+{/* Style if not sides cart is empty */}
+          {
+            props.sidesCartItems.length < 1 ? "" :
+            <h2 className="heading"> <span> &#127839; </span> </h2> 
+          }
+            
           {props.sidesCartItems.map((row) => (
             <p key={row.id} >
             <CreateCard id={row.id} image={row.imgUrl} name={row.name} 
@@ -216,6 +224,12 @@ function Topbar(props) {
             conditionValue={"sides"} />
             </p>
           ))}
+ {/* Style if not beverage cart is empty */}     
+
+ {
+            props.beverageCartItems.length < 1 ? "" :
+            <h2 className="heading"> <span> &#129380; </span> </h2> 
+          }
 
           {props.beverageCartItems.map((row) => (
             <p key={row.id} >
