@@ -1,6 +1,6 @@
 import React, { Component , Fragment} from 'react';
 import { BrowserRouter as Router, Route,  Redirect} from 'react-router-dom';
-import Forgotpassword from '../Forgotpassword';
+import GridComponent from '../GridComponent.js'
 
 
 
@@ -10,13 +10,13 @@ export const PrivateRoute = ({component: Component, ...rest}) => (
     )} />
   ) 
 
-class PasswordResetRouting extends Component {
+class GridRouting extends Component {
     render() {
         return (
             <div>
                 <Router>
                 <Fragment>
-                    <Route path="/user/reset" component={Forgotpassword} />
+                    <Route path="/user/create/grid" component={GridComponent} />
                 </Fragment>
                 </Router>
             </div>
@@ -24,4 +24,4 @@ class PasswordResetRouting extends Component {
     }
 }
 
-export default PasswordResetRouting;
+export default GridRouting;

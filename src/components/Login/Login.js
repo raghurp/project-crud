@@ -94,8 +94,10 @@ export default class Login extends Component {
                     </div>
                     <div style={{height:20}} />
                     <Grid container justify="center" style={{padding:50}} spacing={3}>
-                    <Grid item>
-                        <Button  color="primary" >Forgot password</Button>
+                    <Grid item>                        
+                        <Button 
+                        onClick= { () => { this.setState({ redirect: "/troublelogin" })}}
+                        color="primary" >Trouble Login?</Button>
                     </Grid>
                                 
                     <Grid item>

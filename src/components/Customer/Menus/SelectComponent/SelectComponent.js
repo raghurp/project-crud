@@ -9,7 +9,6 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 
-
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -28,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
 
         const handleSizeChange = (e) => {
             setSize(e.target.value);
-            setSizePrice(e.target.value2)
+            //setSizePrice(e.target.value2)
             
-            props.getSizePrice(e.target.value2)
+            
             props.getSizeName(e.target.value)
             // props.setSizeValue(e.target.value, e.target.value2)
         }
@@ -50,6 +49,10 @@ const useStyles = makeStyles((theme) => ({
           },
            []);
 
+          const priceUpdate = (price) => {
+            props.getSizePrice(price)
+           }
+
     return (
         <div>
 
@@ -66,7 +69,9 @@ const useStyles = makeStyles((theme) => ({
         >
             {
                 SizeArray.map((x, i) => {                   
-                    return  <MenuItem key={i} value2={x.price} value={x.size}>{x.size}</MenuItem> 
+                    return  <MenuItem key={i} value={x.size}>
+                      {x.size} {priceUpdate(x.price)} </MenuItem>  
+                    
                 })
             }
           

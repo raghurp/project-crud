@@ -14,6 +14,9 @@ import EmployeeRouting from './components/Employee/Employee-Routing/Employee-Rou
 import UploadPizzaRouting from './components/UploadPizza/Upload-Pizza-Routing/Upload-Pizza-Routing';
 import MyProfileRouting from './components/MyProfile/My-Profile-Routing/My-Profile-Routing';
 import PasswordResetRouting from './components/ForgotPassword/Password-Reset-Routing/Password-Reset-Routing';
+import TroubleLogin from './components/Trouble-Login/TroubleLogin';
+import GridRouting from './components/grid-component/grid-routing/GridRouting';
+import DynamicTable from './dynamic-components/Grid/DynamicTable';
 
 
 export const PrivateRoute = ({component: Component, ...rest}) => (
@@ -33,14 +36,17 @@ class App extends Component {
       <div >
         <Router>
         <Route path="/" exact component={Login} /> 
-        <Route path="/signup" exact component={SignUp} />   
+        <Route path="/signup" exact component={SignUp} />
+        <Route path="/troublelogin" exact component={TroubleLogin} /> 
+        <Route path="/dynamic" exact component={DynamicTable} />     
           <Fragment > 
           <PrivateRoute path="/user" component ={User} />
           <RoleBasedRoute path="/home" component ={Topbar} />
           </Fragment>
           
-
+          
           <PrivateRoute>
+          <GridRouting />
           <PasswordResetRouting /> 
           <ManagePizzaRouting />
           <EmployeeRouting />

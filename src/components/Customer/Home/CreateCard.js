@@ -66,14 +66,20 @@ const CreateCard = (props) => {
     return (
         <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Grid border={3} container spacing={2}>
-          
+        <Grid border={3} container spacing={2}>          
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1" style={{color:'blue'}}>
                   {props.name}
                 </Typography>
+                {
+                  (props.sizeName !== '' || props.sizePrice !== '') ? 
+                  <Typography variant="body2" gutterBottom>
+                  {props.sizeName} {props.sizePrice}
+                </Typography> : ''
+                }
+
                 <Typography variant="body2" gutterBottom>
                   {props.descrp}
                 </Typography>
@@ -82,8 +88,7 @@ const CreateCard = (props) => {
                 <Typography variant="body2" onClick={() => removeCart(props.id, props.conditionValue)} 
                 style={{ cursor: 'pointer', color:'red', width: '3px' }}>
                   Remove
-                </Typography>
-                
+                </Typography>                
               </Grid>              
             </Grid>
             

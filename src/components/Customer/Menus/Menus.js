@@ -14,9 +14,6 @@ import Link from '@material-ui/core/Link';
 import { useEffect } from 'react';
 import './MenuStyles/styles.css'
 
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-
 import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
 import pizza1 from './Assets/pizza1.jpg'
@@ -127,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
     .then( rel =>{
       pizzaCart.push(rel.data)
 
-      props.onIncrementPizza(id, pizzaCart)
+      props.onIncrementPizza(id, pizzaCart, sizeName, sizePrice)
     });
   } 
 
@@ -224,10 +221,6 @@ const useStyles = makeStyles((theme) => ({
   },
    []);
 
-   const onGettingSizeValue = (name, price) => { 
-    setSizeName(name)
-    setSizePrice(price);
-  };
 
   // const selectSizes = (num) => {
   //   num.map((val, i) => {
@@ -314,8 +307,8 @@ const useStyles = makeStyles((theme) => ({
 
                     <Grid>
                       <Typography>
-                        {console.log("size name " + sizeName)}
                         <SelectComponent getSizePrice={setSizePrice} getSizeName={setSizeName} size={record.sizes} id={record.id} />
+                        {console.log("size name is  " + sizeName + ' and the size price is ' + sizePrice)}
                       </Typography>
                     </Grid>
 
@@ -475,7 +468,7 @@ const mapDispatchToProps = dispatch => {
       onIncrementCart: (id, arrayValue) => dispatch({type: 'ADD', value:id, payload:arrayValue}),
       onDecrementCart: (id, arrayValue) => dispatch({type: 'REMOVE', value:id, payload:arrayValue }),
 // Pizza
-      onIncrementPizza: (id, arrayValue) => dispatch({type: 'INCREMENT', value:id, payload:arrayValue}),
+      onIncrementPizza: (id, arrayValue, sizeName, sizePrice) => dispatch({type: 'INCREMENT', value:id, payload:arrayValue, nameOfSize:sizeName, priceOfSize:sizePrice }),
       onDecrementPizza: (id, arrayValue) => dispatch({type: 'DECREMENT', value:id, payload:arrayValue}),
 // Beverage
       onIncreasingBeve: (id, arrayValue) => dispatch({type: 'INCREASE', value:id, payload:arrayValue}),

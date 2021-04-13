@@ -206,7 +206,8 @@ function Topbar(props) {
           {props.pizzaCartItems.map((row) => (
             <p key={row.id} >
             <CreateCard id={row.id} image={row.imgUrl} name={row.name} 
-            descrp={row.desc} price={row.price} cart={props.pizzaCartItems} 
+            descrp={row.desc} price={row.price} sizeName={props.sizeNameValue}
+            sizePrice={props.sizePriceValue} cart={props.pizzaCartItems}
             conditionValue={"pizza"} sizevalue={row.sizes} />
             </p>
             
@@ -260,7 +261,9 @@ const mapStateToProps = state => {
       crt: state.cart,
       pizzaCartItems: state.pizzaAdded,
       beverageCartItems: state.beverageAdded,
-      sidesCartItems: state.sidesAdded
+      sidesCartItems: state.sidesAdded,
+      sizeNameValue: state.sizeName,
+      sizePriceValue: state.sizePrice
 
   };
 };
